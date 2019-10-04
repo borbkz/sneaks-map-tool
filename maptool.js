@@ -1,4 +1,3 @@
-
 javascript: (function () {
     let parts = window.location.href.split("/");
     let playerIDIndex = parts.indexOf("players") + 1;
@@ -127,7 +126,7 @@ javascript: (function () {
                     let percent = Math.floor(100 * (tierFinishes[i] / tierTotals[i]));
                     $('.runtext').append(tiers[i] + " TP Completion (" + percent + "%)");
                     $('.runtext').append(a);
-                    console.log("tier " + i + " " + tierFinishes[i] + " maps out of " + tierTotals[i])
+                    console.log("tier " + i + " " + tierFinishes[i] + " maps out of " + tierTotals[i]);
 
                     $('#tier-' + i + '-progress .progress-bar').css('width', percent + '%');
                 }
