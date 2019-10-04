@@ -1,5 +1,7 @@
 # sneaks-map-tool
-A bookmarklet enhancer to https://snksrv.com/kzstats. Does not currently work on Edge browser.
+A bookmarklet enhancer for https://snksrv.com/kzstats. Does not currently work on Edge browser.
+
+**If you're reinstalling this script, remember to manually refresh the maptool.js file before copying the contents to clear your browser cache**
 
 ## Chrome Installation
 1. Enable the bookmarks toolbar. (default ctrl+shift+b on Windows, cmd+shift+b on OSX)
