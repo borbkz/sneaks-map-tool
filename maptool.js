@@ -15,8 +15,8 @@ javascript: (function () {
     $('.pagination').hide();
     $('.recordstext').hide();
     $('.col-md-12').append('<div class="table-container" style="float:left !important; overflow: hidden; height: 800px; width: 1000px; ">' +
-        '<div style="float:left; width: 100%; color: white; text-align:left; font-size:1.2em">' +
-        '<span id="tooltip">click to sort, ctrl/cmd+click to multi-sort, type ":" in the time filter for finished maps and "/" for unfinished</span></div>' +
+        '<div style="float:left; width: 1000px; color: white; text-align:center; font-size:1.2em; font-weight: bold">' +
+        '<span id="tooltip">Click header to sort, ctrl/cmd+click to multi-sort, type ":" in the time filter for finished maps and "/" for unfinished</span></div>' +
         '<div class="handsontable col-md-12" style="margin:1" id="my-table">TABLE</div></div>');
     $tableContainer = $('#my-table')[0];
     function getTimeFromSeconds(seconds) {
@@ -45,7 +45,6 @@ javascript: (function () {
             sneakmaps[map["mapname"]][headers.indexOf("Map")] = map["mapname"];
         });
         $.getJSON(recordsURL, function (data) {
-           
             $.each(data, function (i, record) {
                 let emptytime = x => x === "-1" ? "N/A" : getTimeFromSeconds(x);
                 let emptytp = x => x === "-1" ? "N/A" : x;
@@ -110,7 +109,7 @@ javascript: (function () {
                 for (let i = 0; i < records.length; i++) {
                     let curmap = records[i][0];
                     let tier = mapDict[curmap];
-                   records[i][headers.indexOf("Tier")] = tier;
+                   records[i][headers.indexOf("Tier")] = tier||0;
                 }
                 mytable.updateSettings({
                 });
