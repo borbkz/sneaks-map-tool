@@ -1,4 +1,4 @@
-(function () {
+javascript:(function () {
     let parts = window.location.href.split("/")
     let playerIDIndex = parts.indexOf("players") + 1;
     let playerID = parts[playerIDIndex];
