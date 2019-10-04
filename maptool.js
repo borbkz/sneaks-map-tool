@@ -1,3 +1,4 @@
+
 javascript: (function () {
     let parts = window.location.href.split("/");
     let playerIDIndex = parts.indexOf("players") + 1;
@@ -103,6 +104,8 @@ javascript: (function () {
             $.getJSON(MAPS_URL, function (data) {
                 let mapDict = {};
                 let tierFinishes = Array(7).fill(0);
+                let proFinishes = Array(7).fill(0);
+                let proTotals = Array(7).fill(0);
                 let tierTotals = Array(7).fill(0);
                 $.each(data, function (i, map) {
                     mapDict[map["name"]] = map["difficulty"];
@@ -110,13 +113,20 @@ javascript: (function () {
                 for (let i = 0; i < records.length; i++) {
                     let curmap = records[i][0];
                     let tier = mapDict[curmap];
-                    tierTotals[tier]++;
+                    if (!curmap.startsWith('kzpro')) {
+                        tierTotals[tier]++;
+                    }
+                    proTotals[tier]++;
                     if (records[i][headers.indexOf("TP Time")] != "N/A") {
                         tierFinishes[tier]++;
+                    }
+                    if (records[i][headers.indexOf("Pro Time")] != "N/A") {
+                        proFinishes[tier]++;
                     }
                     records[i][headers.indexOf("Tier")] = tier || 0;
                 }
                 let tiers = ["Non-global", "Very Easy", "Easy", "Medium", "Hard", "Very Hard", "Death"];
+                $('.stats:first').remove();
                 $('.runtext .ng-binding').css('display', 'inline');
                 $('.progress').css('margin-bottom', '0');
                 $('.playerinfo').hide();
@@ -124,11 +134,20 @@ javascript: (function () {
                     let a = $('.progress:first').clone();
                     a.attr('id', 'tier-' + i + '-progress');
                     let percent = Math.floor(100 * (tierFinishes[i] / tierTotals[i]));
-                    $('.runtext').append(tiers[i] + " TP Completion (" + percent + "%)");
+                    $('.runtext').append('<p id="tier-' + i + '-text">' + tiers[i] + " Completion: " + tierFinishes[i] + '/' + tierTotals[i] + '</p>');
                     $('.runtext').append(a);
-                    console.log("tier " + i + " " + tierFinishes[i] + " maps out of " + tierTotals[i]);
-
                     $('#tier-' + i + '-progress .progress-bar').css('width', percent + '%');
+                }
+                let $tpstats = $('.stats:first');
+                $('.stats:first>h2').text('TP Completion');
+                let $prostats = $tpstats.clone();
+                $prostats.insertAfter($tpstats);
+                $prostats.css('margin-left', '5em');
+                $('.stats:nth-child(2)>h2').text('PRO Completion');
+                for (let i = 1; i < tiers.length; i++) {
+                    let percent = Math.floor(100 * (proFinishes[i] / proTotals[i]));
+                    $('.stats:nth-child(2) #tier-' + i + '-text').text(tiers[i] + ' Completion: ' + proFinishes[i] + '/' + proTotals[i]);
+                    $('.stats:nth-child(2) #tier-' + i + '-progress .progress-bar').css('width', percent);
                 }
                 mytable.updateSettings({
                 });
