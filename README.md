@@ -19,3 +19,8 @@ A bookmarklet enhancer to https://snksrv.com/kzstats. Does not currently work on
 4. Go to https://snksrv.com/kzstats/ and find your player profile page  
   (example: https://snksrv.com/kzstats/#/players/11213837979/).
 5.  Click your bookmark.
+
+## Edge users
+Microsoft doesn't let you set a custom URL for bookmarks. But you might be able to get around it.
+Haven't tried this myself:
+https://www.howtogeek.com/231775/how-to-install-and-use-bookmarklets-in-microsoft-edge/
