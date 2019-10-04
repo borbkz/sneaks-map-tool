@@ -1,5 +1,5 @@
 # sneaks-map-tool
-An enhancer to https://snksrv.com/kzstats. Does no work on Edge browser.
+An enhancer to https://snksrv.com/kzstats. Does not currently work on Edge browser.
 
 ## Installation
 1. On Chrome and Firefox, enable the bookmarks toolbar. (default ctrl+shift+b on Windows)
