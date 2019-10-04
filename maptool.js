@@ -3,6 +3,7 @@ javascript:(function () {
     let playerIDIndex = parts.indexOf("players") + 1;
     let playerID = parts[playerIDIndex];
     let recordsURL = location.protocol + "//" + location.hostname + "/kzstats/api/player/" + playerID + '/records/';
+    const MAPS_URL = 'https://kztimerglobal.com/api/v1.0/maps?is_validated=true&limit=1000';
     $('table-container').remove();
     $('.handsontable').remove();
     $('#tooltip').remove();
@@ -11,7 +12,7 @@ javascript:(function () {
     $('head').append('<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css">');
     $('.pagination').hide();
     $('.recordstext').hide();
-    $('.col-md-12').append('<div class="table-container" style="float:left !important; overflow: hidden; height: 800px; width: 800px; ">' +
+    $('.col-md-12').append('<div class="table-container" style="float:left !important; overflow: hidden; height: 800px; width: 1000px; ">' +
         '<div style="float:left; width: 100%; color: white; text-align:left; font-size:1.2em">' +
         '<span id="tooltip">click to sort, ctrl/cmd+click to multi-sort, type ":" in the time filter for finished maps and "/" for unfinished</span></div>' +
         '<div class="handsontable col-md-12" style="margin:1" id="my-table">TABLE</div></div>');
@@ -35,11 +36,11 @@ javascript:(function () {
     }
     $.getJSON(recordsURL, function (data) {
         let records = [];
-        let headers = ["Map", "Pro Time","TP Time", "TPs"];
+        let headers = ["Map", "Tier", "Pro Time","TP Time", "TPs"];
         $.each(data, function (i, record) {
             let emptytime = x => x === "-1" ? "n/a" : getTimeFromSeconds(x);
             let emptytp = x => x === "-1" ? "n/a" : x;
-            records.push([record["mapname"], emptytime(record["runtimepro"]),emptytime(record["runtime"]), emptytp(record["teleports"])]);
+            records.push([record["mapname"], "", emptytime(record["runtimepro"]),emptytime(record["runtime"]), emptytp(record["teleports"])]);
         });
         var debounceFn = Handsontable.helper.debounce(function (colIndex, event) {
             var filtersPlugin = mytable.getPlugin('filters');
@@ -76,6 +77,7 @@ javascript:(function () {
         };
         mycolumns=Array(headers.length).fill({});
         mycolumns[headers.indexOf("TPs")]={className:"htCenter"};
+         mycolumns[headers.indexOf("Tier")]={className:"htCenter"};
         var mytable = new Handsontable($tableContainer, {
             data: records,
             colHeaders: headers,
@@ -88,5 +90,18 @@ javascript:(function () {
             beforeOnCellMouseDown: doNotSelectColumn,
             licenseKey: 'non-commercial-and-evaluation'
         });
+         $.getJSON(MAPS_URL, function (data) {
+             let mapDict = {};
+             $.each(data, function(i, map){
+                mapDict[map["name"]] = map["difficulty"];
+             });
+             for(let i = 0; i < records.length; i++){
+                 let curmap = records[i][0];
+                 let tier = mapDict[curmap];
+                records[i][headers.indexOf("Tier")] = tier;
+             }
+             mytable.updateSettings({
+             });
+         });
     })
 })();
