@@ -3,7 +3,7 @@ A bookmarklet enhancer for https://snksrv.com/kzstats. Does not currently work o
 
 **If you're reinstalling this script, remember to manually refresh the maptool.js file before copying the contents to clear your browser cache**
 
-![](https://i.gyazo.com/752c5450c8581e01b424facfd3bd28a4.png)
+![](https://i.gyazo.com/4c919dde7e898ec328010e7c78cc1808.png)
 
 ## Chrome Installation
 1. Enable the bookmarks toolbar. (default ctrl+shift+b on Windows, cmd+shift+b on OSX)
