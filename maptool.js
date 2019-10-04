@@ -48,7 +48,7 @@ javascript: (function () {
             $.each(data, function (i, record) {
                 let emptytime = x => x === "-1" ? "N/A" : getTimeFromSeconds(x);
                 let emptytp = x => x === "-1" ? "N/A" : x;
-                sneakmaps[record["mapname"]]= [record["mapname"], "", emptytime(record["runtimepro"]), emptytime(record["runtime"]), emptytp(record["teleports"])];
+                sneakmaps[record["mapname"]] = [record["mapname"], "", emptytime(record["runtimepro"]), emptytime(record["runtime"]), emptytp(record["teleports"])];
             });
             var debounceFn = Handsontable.helper.debounce(function (colIndex, event) {
                 var filtersPlugin = mytable.getPlugin('filters');
@@ -88,7 +88,7 @@ javascript: (function () {
             mycolumns[headers.indexOf("Tier")] = { className: "htCenter" };
             mycolumns[headers.indexOf("Pro Time")] = { className: "htCenter" };
             mycolumns[headers.indexOf("TP Time")] = { className: "htCenter" };
-             let records = Object.values(sneakmaps);
+            let records = Object.values(sneakmaps);
             var mytable = new Handsontable($tableContainer, {
                 data: records,
                 colHeaders: headers,
@@ -103,13 +103,33 @@ javascript: (function () {
             });
             $.getJSON(MAPS_URL, function (data) {
                 let mapDict = {};
+                let tierFinishes = Array(7).fill(0);
+                let tierTotals = Array(7).fill(0);
                 $.each(data, function (i, map) {
                     mapDict[map["name"]] = map["difficulty"];
                 });
                 for (let i = 0; i < records.length; i++) {
                     let curmap = records[i][0];
                     let tier = mapDict[curmap];
-                   records[i][headers.indexOf("Tier")] = tier||0;
+                    tierTotals[tier]++;
+                    if (records[i][headers.indexOf("TP Time")] != "N/A") {
+                        tierFinishes[tier]++;
+                    }
+                    records[i][headers.indexOf("Tier")] = tier || 0;
+                }
+                let tiers = ["Non-global", "Very Easy", "Easy", "Medium", "Hard", "Very Hard", "Death"];
+                $('.runtext .ng-binding').css('display', 'inline');
+                $('.progress').css('margin-bottom', '0');
+                $('.playerinfo').hide();
+                for (let i = 1; i < tiers.length; i++) {
+                    let a = $('.progress:first').clone();
+                    a.attr('id', 'tier-' + i + '-progress');
+                    let percent = Math.floor(100 * (tierFinishes[i] / tierTotals[i]));
+                    $('.runtext').append(tiers[i] + " TP Completion (" + percent + "%)");
+                    $('.runtext').append(a);
+                    console.log("tier " + i + " " + tierFinishes[i] + " maps out of " + tierTotals[i])
+
+                    $('#tier-' + i + '-progress .progress-bar').css('width', percent + '%');
                 }
                 mytable.updateSettings({
                 });
