@@ -147,7 +147,7 @@ javascript: (function () {
                 for (let i = 1; i < tiers.length; i++) {
                     let percent = Math.floor(100 * (proFinishes[i] / proTotals[i]));
                     $('.stats:nth-child(2) #tier-' + i + '-text').text(tiers[i] + ' Completion: ' + proFinishes[i] + '/' + proTotals[i]);
-                    $('.stats:nth-child(2) #tier-' + i + '-progress .progress-bar').css('width', percent);
+                    $('.stats:nth-child(2) #tier-' + i + '-progress .progress-bar').css('width', percent +'%');
                 }
                 mytable.updateSettings({
                 });
